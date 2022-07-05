@@ -1,6 +1,7 @@
 package com.community.soccer.repository;
 
 import com.community.soccer.domain.Member;
+import com.community.soccer.domain.MemberEditDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -20,5 +21,9 @@ public class MemberRepository {
         em.remove(member);
     }
 
-
+    //정보 업데이트
+    public void update(Member member, MemberEditDao dto) {
+        member.setLoginId(dto.loginId());
+        member.setNickName(dto.nickName());
+    }
 }
