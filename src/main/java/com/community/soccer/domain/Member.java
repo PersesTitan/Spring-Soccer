@@ -1,8 +1,6 @@
 package com.community.soccer.domain;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +9,7 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -18,8 +17,8 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String loginId;
-    private String nickName;
+    @Setter private String loginId;
+    @Setter private String nickName;
     private LocalDateTime createDate;
 
     private Member(String loginId, String nickName) {
