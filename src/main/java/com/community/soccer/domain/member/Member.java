@@ -1,4 +1,4 @@
-package com.community.soccer.domain;
+package com.community.soccer.domain.member;
 
 import lombok.*;
 
