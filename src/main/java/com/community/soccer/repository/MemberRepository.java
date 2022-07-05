@@ -3,11 +3,11 @@ package com.community.soccer.repository;
 import com.community.soccer.domain.member.Member;
 import com.community.soccer.domain.member.MemberEditDao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
-@Controller
+@Repository
 @RequiredArgsConstructor
 public class MemberRepository {
 
