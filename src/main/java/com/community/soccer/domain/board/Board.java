@@ -17,11 +17,14 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
-    @Setter private String title;
-    @Setter private String content;
+    @Setter
+    private String title;
+    @Setter @Column(columnDefinition = "TEXT")
+    private String content;
     private LocalDateTime createDate;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private Board(String title, String content) {
