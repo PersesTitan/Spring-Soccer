@@ -31,7 +31,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: CDNievas/heroku-action@v1.0
+      - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_app_name: "soccer-community"
           heroku_email: "torampersestitan@gmail.com"
