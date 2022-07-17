@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# yml 올라감 방지
+application-oauth.yml
