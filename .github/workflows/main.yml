@@ -30,8 +30,9 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
-      - uses: akhileshns/persestitan@v3.12.12
+          java-version: '17'  
+      - name: Deploy to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_app_name: "soccer-community"
           heroku_email: "torampersestitan@gmail.com"
