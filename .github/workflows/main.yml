@@ -31,8 +31,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'  
-      - name: Deploy to heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_app_name: "soccer-community"
           heroku_email: "torampersestitan@gmail.com"
