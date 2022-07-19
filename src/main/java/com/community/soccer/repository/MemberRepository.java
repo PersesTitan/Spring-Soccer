@@ -2,6 +2,7 @@ package com.community.soccer.repository;
 
 import com.community.soccer.domain.member.Member;
 import com.community.soccer.domain.member.dao.MemberEditDao;
+import com.community.soccer.domain.member.request.EditMemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,14 +19,15 @@ public class MemberRepository {
         em.persist(member);
     }
 
+    //회원 삭제
     public void remove(Member member) {
         em.remove(member);
     }
 
     //정보 업데이트
-    public void update(Member member, MemberEditDao dto) {
-        member.setLoginId(dto.loginId());
-        member.setNickName(dto.nickName());
+    public Member update(Member member, String nickName) {
+        member.setNickName(nickName);
+        return member;
     }
 
     //아이디 조회
