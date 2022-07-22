@@ -1,13 +1,18 @@
 package com.community.soccer.domain.game;
 
-import com.community.soccer.domain.member.Member;
+import com.community.soccer.domain.item.PositionDto;
 import com.community.soccer.domain.player.Player;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +26,62 @@ public class Game {
     @Column(name = "game_id")
     private Long id;
 
-    private LocalDateTime gameDate;
+    @NotBlank
+    private String title;
+    @NotBlank
+    private String place;
+    @Setter @NotBlank
     private String region;
-    private Integer numberOfPeople; //참가할 인원수
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member createMember;
+    @Setter @NotNull
+    private LocalDateTime startDate;
+    @Setter @NotNull @Past
+    private LocalDateTime endDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Player> players = new ArrayList<>();
+    @PositiveOrZero
+    private Integer masterFW;
+    @PositiveOrZero
+    private Integer masterMF;
+    @PositiveOrZero
+    private Integer masterDF;
+    @PositiveOrZero
+    private Integer masterGK;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @OneToMany
+    private final List<Player> players = new ArrayList<>();
+
+    private Game(String title, String place, String region,
+                 LocalDateTime startDate, LocalDateTime endDate, String description,
+                 PositionDto positionDto) {
+        this.title = title;
+        this.place = place;
+        this.region = region;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+
+        this.masterFW = positionDto.masterFW();
+        this.masterMF = positionDto.masterMF();
+        this.masterDF = positionDto.masterDF();
+        this.masterGK = positionDto.masterGK();
+    }
+
+    //정보 갱신 메소드
+    public void update(LocalDateTime startDate, LocalDateTime endDate, String region) {
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
+        this.setRegion(region);
+    }
+
+    //생성 메소드
+    public static Game createGame(String title, String place, String region,
+                                  LocalDateTime startDate, LocalDateTime endDate,
+                                  String description, PositionDto positionDto) {
+        return new Game(title, place, region, startDate, endDate, description, positionDto);
+    }
 
     @Override
     public boolean equals(Object o) {
