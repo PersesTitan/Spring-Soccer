@@ -50,7 +50,7 @@ public class Game {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "game")
     private final List<Player> players = new ArrayList<>();
 
     private Game(String title, String place, String region,
