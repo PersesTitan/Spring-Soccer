@@ -1,8 +1,6 @@
 package com.community.soccer.repository;
 
 import com.community.soccer.domain.member.Member;
-import com.community.soccer.domain.member.dao.MemberEditDao;
-import com.community.soccer.domain.member.request.EditMemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
