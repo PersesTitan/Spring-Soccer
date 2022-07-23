@@ -1,7 +1,6 @@
 package com.community.soccer.domain.game.dao;
 
 import com.community.soccer.domain.item.Position;
-import com.community.soccer.domain.item.PositionDto;
 import com.community.soccer.domain.player.Player;
 
 import java.time.LocalDateTime;
