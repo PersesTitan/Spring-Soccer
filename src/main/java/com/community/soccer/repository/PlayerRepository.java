@@ -17,6 +17,10 @@ public class PlayerRepository {
         em.persist(player);
     }
 
+    public void remove(Player player) {
+        em.remove(player);
+    }
+
     //Player 조회하는 로직
     public Player findOne(Long id) {
         return em.find(Player.class, id);

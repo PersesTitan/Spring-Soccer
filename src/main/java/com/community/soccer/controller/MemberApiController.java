@@ -9,7 +9,6 @@ import com.community.soccer.domain.member.request.CreateMemberRequest;
 import com.community.soccer.domain.member.request.EditMemberRequest;
 import com.community.soccer.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
