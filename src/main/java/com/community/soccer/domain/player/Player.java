@@ -1,13 +1,14 @@
 package com.community.soccer.domain.player;
 
+import com.community.soccer.domain.game.Game;
 import com.community.soccer.domain.item.Position;
-import com.community.soccer.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity @Getter
@@ -18,20 +19,30 @@ public class Player {
     @Column(name = "player_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "game_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Game game;
 
     @Enumerated(EnumType.STRING)
     private Position position;
 
-    private Player(Position position) {
+    @Pattern(regexp = "^0\\d{1,2}(-\\d{3,4}-\\d{4}|\\d{7,8})$")
+    private String phone;
+
+    private Player(Position position, String phone) {
         this.position = position;
+        this.phone = phone;
     }
 
     //생성 로직
-    public static Player createPlayer(Position position) {
-        return new Player(position);
+    public static Player createPlayer(Position position, String phone) {
+        return new Player(position, phone);
+    }
+
+    //연관 관계 편의 메소드
+    public void setGame(Game game) {
+        this.game = game;
+        game.getPlayers().add(this);
     }
 
     @Override
