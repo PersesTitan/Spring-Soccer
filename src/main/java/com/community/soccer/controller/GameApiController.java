@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class GameApiController {
 
     @GetMapping
     public GameSearchDao search(HttpServletRequest request) {
-        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"));
+        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String region = request.getParameter("region");
         List<Game> search = gameService.findSearch(localDateTime, region);
 
