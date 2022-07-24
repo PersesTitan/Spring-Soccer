@@ -2,11 +2,13 @@ package com.community.soccer.domain.game;
 
 import com.community.soccer.domain.item.PositionDto;
 import com.community.soccer.domain.player.Player;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,9 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,7 +34,9 @@ public class Game {
     private String region;
 
     @Setter @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Setter @NotNull @Past
     private LocalDateTime endDate;
 
