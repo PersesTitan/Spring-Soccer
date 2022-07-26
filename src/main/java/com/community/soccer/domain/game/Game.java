@@ -10,10 +10,7 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -32,11 +29,11 @@ public class Game {
     @Setter @NotBlank
     private String region;
 
-    @Setter @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Setter @NotNull @Future
     private LocalDateTime startDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Setter @NotNull @Past
+    @Setter @NotNull @Future
     private LocalDateTime endDate;
 
     @PositiveOrZero
