@@ -97,7 +97,7 @@ public class GameApiController {
         gameService.remove(id);
     }
 
-    @GetMapping
+    @GetMapping("")
     public GameSearchDao search(HttpServletRequest request) {
         LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String region = request.getParameter("region");
