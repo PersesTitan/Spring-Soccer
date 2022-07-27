@@ -98,15 +98,22 @@ public class GameApiController {
     }
 
     @GetMapping("")
-    public GameSearchDao search(HttpServletRequest request) {
-        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public List<Game> search(HttpServletRequest request) {
+        String localDateTimeReq = request.getParameter("localDateTime");
         String region = request.getParameter("region");
-        List<Game> search = gameService.findSearch(localDateTime, region);
+
+        List<Game> search;
+
+        if(localDateTimeReq != null && region != null){
+            LocalDateTime localDateTime = LocalDateTime.parse(localDateTimeReq, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            search = gameService.findSearch(localDateTime, region);
+        } else {
+            search = gameService.findAll();
+        }
+        for (Game game : search) overDateRemove(game.getId(), game.getEndDate());
+        return search;
 
         //날짜 확인
-        for (Game game : search) overDateRemove(game.getId(), game.getEndDate());
-
-        return new GameSearchDao(search);
     }
 
     private Map<Position, Integer> setRequirePlayer(Game game) {
