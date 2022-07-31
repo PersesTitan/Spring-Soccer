@@ -1,0 +1,23 @@
+### create game
+
+POST http://localhost:8080/games
+Content-Type: application/json
+
+# public record GameCreateRequest(String title, String place, String region,
+#                                 LocalDateTime startDate, LocalDateTime endDate,
+#                                 Map<Position, Integer> requirePlayer, String description) { }
+
+{
+    "title": "abasdasdc",
+    "place": "abc",
+    "region": "seoul",
+    "startDate": "2022-07-24T15:13:40",
+    "endDate": "2022-07-24T18:13:40",
+    "requirePlayer": {
+        "FW": 1,
+        "MF": 1,
+        "DF": 1,
+        "GK": 1
+    },
+    "description": "abcasda"
+}
