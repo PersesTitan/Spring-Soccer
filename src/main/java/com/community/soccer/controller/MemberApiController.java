@@ -23,7 +23,7 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    @PostMapping
+    @PostMapping("")
     public MemberCreateDao createMemberDao(@RequestBody @Valid CreateMemberRequest createMemberRequest) {
         String loginId = createMemberRequest.loginId();
         String nickName = createMemberRequest.nickName();
@@ -58,7 +58,7 @@ public class MemberApiController {
         memberService.remove(id);
     }
 
-    @GetMapping
+    @GetMapping("")
     public MemberSearchDao searchDao(HttpServletRequest request) {
         String keyword = request.getParameter("keyword");
         List<Member> members = memberService.findSearch(keyword);
