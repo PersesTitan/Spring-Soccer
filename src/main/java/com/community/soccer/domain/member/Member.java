@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -22,8 +24,11 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Setter private String loginId;
-    @Setter private String nickName;
+    @Setter @NotBlank
+    private String loginId;
+    @Setter @NotBlank
+    private String nickName;
+    @PastOrPresent
     private LocalDateTime createDate;
 
     private Member(String loginId, String nickName) {
