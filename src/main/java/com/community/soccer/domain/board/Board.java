@@ -41,6 +41,12 @@ public class Board {
         return new Board(title, content, member);
     }
 
+    //update
+    public void update(String title, String content) {
+        this.setTitle(title);
+        this.setContent(content);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
