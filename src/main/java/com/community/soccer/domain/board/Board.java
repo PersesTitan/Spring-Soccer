@@ -29,15 +29,16 @@ public class Board {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Board(String title, String content) {
+    private Board(String title, String content, Member member) {
         this.title = title;
         this.content = content;
+        this.member = member;
         createDate = LocalDateTime.now();
     }
 
     //생성 로직
-    public static Board createBoard(String title, String content) {
-        return new Board(title, content);
+    public static Board createBoard(String title, String content, Member member) {
+        return new Board(title, content, member);
     }
 
     @Override
