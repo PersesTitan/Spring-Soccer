@@ -15,8 +15,7 @@ import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-@Getter
+@Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -28,18 +27,21 @@ public class Member {
     private String loginId;
     @Setter @NotBlank
     private String nickName;
+    @Setter @NotBlank
+    private String password;
     @PastOrPresent
     private LocalDateTime createDate;
 
-    private Member(String loginId, String nickName) {
+    private Member(String loginId, String nickName, String password) {
         this.loginId = loginId;
         this.nickName = nickName;
+        this.password = password;
         createDate = LocalDateTime.now();
     }
 
     //생성 로직
-    public static Member createMember(String loginId, String nickName) {
-        return new Member(loginId, nickName);
+    public static Member createMember(String loginId, String nickName, String password) {
+        return new Member(loginId, nickName, password);
     }
 
     //equals
