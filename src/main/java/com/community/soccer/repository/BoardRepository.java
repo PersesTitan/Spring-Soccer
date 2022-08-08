@@ -35,4 +35,10 @@ public class BoardRepository {
         return em.createQuery("SELECT b FROM Board AS b", Board.class)
                 .getResultList();
     }
+
+    public List<Board> findSearch(String title) {
+        return em.createQuery("SELECT b FROM Board AS b WHERE b.title = :title", Board.class)
+                .setParameter("title", "%" + title + "%")
+                .getResultList();
+    }
 }
