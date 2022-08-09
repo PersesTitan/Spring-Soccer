@@ -4,7 +4,6 @@ import com.community.soccer.domain.member.Member;
 import com.community.soccer.domain.member.dao.MemberCreateDao;
 import com.community.soccer.domain.member.dao.MemberEditDao;
 import com.community.soccer.domain.member.dao.MemberFindDao;
-import com.community.soccer.domain.member.dao.MemberSearchDao;
 import com.community.soccer.domain.member.request.CreateMemberRequest;
 import com.community.soccer.domain.member.request.EditMemberRequest;
 import com.community.soccer.service.MemberService;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/members")
@@ -24,17 +24,17 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping("")
-    public MemberCreateDao createMemberDao(@RequestBody @Valid CreateMemberRequest createMemberRequest) {
-        String loginId = createMemberRequest.loginId();
-        String nickName = createMemberRequest.nickName();
-        Member member = Member.createMember(loginId, nickName);
-
-        Long id = memberService.save(member);
-        return new MemberCreateDao(id);
+    public MemberCreateDao createMember(@RequestBody @Valid CreateMemberRequest request) {
+        String loginId = request.loginId();
+        String nickName = request.nickName();
+        String password = request.password();
+        Member member = Member.createMember(loginId, nickName, password);
+        memberService.save(member);
+        return new MemberCreateDao(member.getId());
     }
 
     @GetMapping("/{id}")
-    public MemberFindDao findMemberDao(@PathVariable Long id) {
+    public MemberFindDao findOne(@PathVariable("id") Long id) {
         Member member = memberService.findOne(id);
         String nickName = member.getNickName();
         LocalDateTime createDate = member.getCreateDate();
@@ -43,26 +43,30 @@ public class MemberApiController {
     }
 
     @PatchMapping("/{id}")
-    public MemberEditDao editMemberDao(@PathVariable Long id,
-                                       @RequestBody @Valid EditMemberRequest editMemberRequest) {
-        Member member = memberService.update(id, editMemberRequest);
-        String nickName = member.getNickName();
-        LocalDateTime createDate = member.getCreateDate();
-        String loginId = member.getLoginId();
+    public MemberEditDao findEdit(@PathVariable("id") Long id,
+                                  @RequestBody @Valid EditMemberRequest request) {
+        String nickName = request.nickName();
+        String password = request.password();
+        String loginId = request.loginId();
+        LocalDateTime createDate = request.createDate();
 
-        return new MemberEditDao(id, loginId, nickName, createDate);
+        return new MemberEditDao(id, password, loginId, nickName, createDate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMemberDao(@PathVariable Long id) {
+    public void remove(@PathVariable("id") Long id) {
         memberService.remove(id);
     }
 
     @GetMapping("")
-    public MemberSearchDao searchDao(HttpServletRequest request) {
+    public List<MemberFindDao> memberSearch(HttpServletRequest request) {
         String keyword = request.getParameter("keyword");
-        List<Member> members = memberService.findSearch(keyword);
-        return new MemberSearchDao(members);
+        return memberService.findSearch(keyword)
+                .stream()
+                .map(o -> new MemberFindDao(
+                        o.getId(),
+                        o.getNickName(),
+                        o.getCreateDate()))
+                .collect(Collectors.toList());
     }
-
 }
