@@ -37,7 +37,12 @@ public class BoardService {
         return boardRepository.findOne(id);
     }
 
-    public List<Board> findAll() {
-        return boardRepository.findAll();
+    public List<Board> findAll(int firstRes) {
+        return boardRepository.findAll(firstRes);
+    }
+
+    public List<Board> findSearch(String title, int firstRes) {
+        if (title == null) return boardRepository.findAll(firstRes);
+        else return boardRepository.findSearch(title, firstRes);
     }
 }
