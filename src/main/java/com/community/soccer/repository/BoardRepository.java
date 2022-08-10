@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class BoardRepository {
-
+    public static final int PAGE_COUNT = 10;
     private final EntityManager em;
 
     //저장 로직
@@ -31,14 +31,18 @@ public class BoardRepository {
         return em.find(Board.class, id);
     }
 
-    public List<Board> findAll() {
+    public List<Board> findAll(int firstRes) {
         return em.createQuery("SELECT b FROM Board AS b", Board.class)
+                .setFirstResult(firstRes * PAGE_COUNT)
+                .setMaxResults(PAGE_COUNT)
                 .getResultList();
     }
 
-    public List<Board> findSearch(String title) {
+    public List<Board> findSearch(String title, int firstRes) {
         return em.createQuery("SELECT b FROM Board AS b WHERE b.title = :title", Board.class)
                 .setParameter("title", "%" + title + "%")
+                .setFirstResult(firstRes * PAGE_COUNT)
+                .setMaxResults(PAGE_COUNT)
                 .getResultList();
     }
 }
