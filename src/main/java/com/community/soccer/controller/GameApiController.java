@@ -82,7 +82,7 @@ public class GameApiController {
         LocalDateTime endDate = gameEditRequest.endDate();
         String region = gameEditRequest.region();
 
-        game.update(startDate, endDate, region);
+        gameService.update(id, startDate, endDate, region);
 
         String title = game.getTitle();
         String place = game.getPlace();
@@ -99,7 +99,8 @@ public class GameApiController {
 
     @GetMapping("")
     public GameSearchDao search(HttpServletRequest request) {
-        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String region = request.getParameter("region");
         List<Game> search = gameService.findSearch(localDateTime, region);
 
