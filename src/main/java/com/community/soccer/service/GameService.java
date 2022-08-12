@@ -38,7 +38,7 @@ public class GameService {
         return gameRepository.findOne(id);
     }
 
-    public List<Game> findAll() {
+    public List<Game> findAll(Integer pages) {
         return gameRepository.findAll();
     }
 
