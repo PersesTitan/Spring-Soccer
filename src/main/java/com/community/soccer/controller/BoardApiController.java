@@ -8,6 +8,7 @@ import com.community.soccer.domain.board.dao.BoardSearchDao;
 import com.community.soccer.domain.board.request.BoardCreateRequest;
 import com.community.soccer.domain.member.Member;
 import com.community.soccer.service.BoardService;
+import com.community.soccer.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +23,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardApiController {
 
+    private final MemberService memberService;
     private final BoardService boardService;
 
     @PostMapping("")
     public BoardCreateDao saveBoard(@RequestBody @Valid BoardCreateRequest request) {
         String title = request.title();
         String content = request.content();
-        Member member = request.member();
+        Member member = memberService.findOne(request.memberId());
         Board board = Board.createBoard(title, content, member);
+
         return new BoardCreateDao(board.getId());
     }
 
@@ -60,9 +63,11 @@ public class BoardApiController {
     }
 
     @GetMapping("")
-    public BoardSearchDao boardSearchDao(HttpServletRequest request) {
+    public BoardSearchDao boardSearchDao(HttpServletRequest request,
+                                         @RequestParam(value = "page", defaultValue = "0") int page) {
         String title = request.getParameter("title");
-        List<Board> collect = new ArrayList<>(boardService.findSearch(title));
+
+        List<Board> collect = new ArrayList<>(boardService.findSearch(title, page));
 
         return new BoardSearchDao(collect);
     }
