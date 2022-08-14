@@ -12,11 +12,10 @@ import com.community.soccer.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/boards")
@@ -63,12 +62,11 @@ public class BoardApiController {
     }
 
     @GetMapping("")
-    public BoardSearchDao boardSearchDao(HttpServletRequest request,
+    public List<BoardSearchDao> boardSearchDao(@RequestParam(value = "title", defaultValue = "") String title,
                                          @RequestParam(value = "page", defaultValue = "0") int page) {
-        String title = request.getParameter("title");
-
-        List<Board> collect = new ArrayList<>(boardService.findSearch(title, page));
-
-        return new BoardSearchDao(collect);
+        return boardService.findSearch(title, page)
+                .stream()
+                .map(value -> new BoardSearchDao(value))
+                .collect(Collectors.toList());
     }
 }
