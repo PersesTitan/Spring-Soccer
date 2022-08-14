@@ -62,8 +62,9 @@ public class BoardApiController {
     }
 
     @GetMapping("")
-    public List<BoardSearchDao> boardSearchDao(@RequestParam(value = "title", defaultValue = "") String title,
-                                         @RequestParam(value = "page", defaultValue = "0") int page) {
+    public List<BoardSearchDao> boardSearchDao(
+            @RequestParam(value = "title", defaultValue = "") String title,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
         return boardService.findSearch(title, page)
                 .stream()
                 .map(value -> new BoardSearchDao(value))
