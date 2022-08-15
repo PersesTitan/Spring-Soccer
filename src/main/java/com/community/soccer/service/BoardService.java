@@ -42,7 +42,7 @@ public class BoardService {
     }
 
     public List<Board> findSearch(String title, int firstRes) {
-        if (title == null) return boardRepository.findAll(firstRes);
+        if (title.isBlank()) return boardRepository.findAll(firstRes);
         else return boardRepository.findSearch(title, firstRes);
     }
 }
