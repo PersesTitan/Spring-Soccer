@@ -98,16 +98,27 @@ public class GameApiController {
     }
 
     @GetMapping("")
-    public GameSearchDao search(HttpServletRequest request) {
-        LocalDateTime localDateTime = LocalDateTime.parse(request.getParameter("localDateTime"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String region = request.getParameter("region");
-        List<Game> search = gameService.findSearch(localDateTime, region);
+    public GameSearchDao search(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "region", defaultValue = "") String region,
+            @RequestParam(value = "localDateTime", defaultValue = "") String localDateTime) {
+        List<Game> search = getGameData(localDateTime, region, page);
 
         //날짜 확인
         for (Game game : search) overDateRemove(game.getId(), game.getEndDate());
-
         return new GameSearchDao(search);
+    }
+
+    // 조건에 맞는 값 반환
+    private List<Game> getGameData(String localDateTime, String region, int page) {
+        if (!localDateTime.isBlank()) {
+            LocalDateTime date = LocalDateTime.parse(localDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            return !region.isBlank() ?
+                    gameService.findSearch(date, region, page) :
+                    gameService.findDate(date, page);
+        } else return !region.isBlank() ?
+                    gameService.findRegion(region, page) :
+                    gameService.findAll(page);
     }
 
     private Map<Position, Integer> setRequirePlayer(Game game) {
@@ -123,7 +134,6 @@ public class GameApiController {
     private void overDateRemove(Long id, LocalDateTime endDate) {
         if (endDate.isBefore(LocalDateTime.now())) {
             gameService.remove(id);
-
         }
     }
 }
