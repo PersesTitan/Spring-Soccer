@@ -38,11 +38,19 @@ public class GameService {
         return gameRepository.findOne(id);
     }
 
-    public List<Game> findAll(Integer pages) {
-        return gameRepository.findAll();
+    public List<Game> findAll(int pages) {
+        return gameRepository.findAll(pages);
     }
 
-    public List<Game> findSearch(LocalDateTime dateTime, String region) {
-        return gameRepository.findSearch(dateTime, region);
+    public List<Game> findSearch(LocalDateTime dateTime, String region, int pages) {
+        return gameRepository.findSearch(dateTime, region, pages);
+    }
+
+    public List<Game> findRegion(String region, int pages) {
+        return gameRepository.findRegion(region, pages);
+    }
+
+    public List<Game> findDate(LocalDateTime date, int pages) {
+        return gameRepository.findDate(date, pages);
     }
 }
