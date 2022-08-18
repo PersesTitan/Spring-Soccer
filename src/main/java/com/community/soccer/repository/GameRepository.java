@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class GameRepository {
-
+    public static final int PAGE_COUNT = 10;
     private final EntityManager em;
 
     public void save(Game game) {
@@ -35,15 +35,35 @@ public class GameRepository {
         return em.find(Game.class, id);
     }
 
-    public List<Game> findAll() {
+    public List<Game> findAll(int firstRes) {
         return em.createQuery("SELECT G FROM Game AS G", Game.class)
+                .setFirstResult(firstRes * PAGE_COUNT)
+                .setMaxResults(firstRes)
                 .getResultList();
     }
 
-    public List<Game> findSearch(LocalDateTime date, String region) {
-        return em.createQuery("SELECT G FROM Game G WHERE (:date BETWEEN G.startDate AND G.endDate) AND G.region = :region", Game.class)
+    public List<Game> findSearch(LocalDateTime date, String region, int firstRes) {
+        return em.createQuery("SELECT G FROM Game G WHERE (:date BETWEEN G.startDate AND G.endDate) AND G.region LIKE :region", Game.class)
                 .setParameter("date", date)
-                .setParameter("region", region)
+                .setParameter("region", "%" + region + "%")
+                .setFirstResult(firstRes * PAGE_COUNT)
+                .setMaxResults(PAGE_COUNT)
+                .getResultList();
+    }
+
+    public List<Game> findRegion(String region, int firstRes) {
+        return em.createQuery("SELECT G FROM Game G WHERE G.region LIKE :region", Game.class)
+                .setParameter("region", "%" + region + "%")
+                .setFirstResult(firstRes * PAGE_COUNT)
+                .setMaxResults(PAGE_COUNT)
+                .getResultList();
+    }
+
+    public List<Game> findDate(LocalDateTime date, int firstRes) {
+        return em.createQuery("SELECT G FROM Game g WHERE (:date BETWEEN G.startDate AND G.endDate)", Game.class)
+                .setParameter("date", date)
+                .setFirstResult(firstRes * PAGE_COUNT)
+                .setMaxResults(PAGE_COUNT)
                 .getResultList();
     }
 }
