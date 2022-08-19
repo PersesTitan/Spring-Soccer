@@ -7,6 +7,7 @@ import com.community.soccer.domain.board.dao.BoardFindDao;
 import com.community.soccer.domain.board.dao.BoardSearchDao;
 import com.community.soccer.domain.board.request.BoardCreateRequest;
 import com.community.soccer.domain.member.Member;
+import com.community.soccer.error.ErrorCreate;
 import com.community.soccer.service.BoardService;
 import com.community.soccer.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,14 @@ public class BoardApiController {
     private final BoardService boardService;
 
     @PostMapping("")
-    public BoardCreateDao saveBoard(@RequestBody @Valid BoardCreateRequest request) {
+    public BoardCreateDao saveBoard(
+            @RequestBody @Valid BoardCreateRequest request,
+            @CookieValue(name = "memberId", required = false) Long memberId) {
+        // 로그인이 되어있지 않으면 에러 발생
+        if (memberId == null) throw new ErrorCreate("로그인이 필요합니다.");
         String title = request.title();
         String content = request.content();
-        Member member = memberService.findOne(request.memberId());
+        Member member = memberService.findOne(memberId);
         Board board = Board.createBoard(title, content, member);
 
         return new BoardCreateDao(board.getId());
