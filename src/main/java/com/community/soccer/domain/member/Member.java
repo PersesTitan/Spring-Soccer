@@ -24,6 +24,7 @@ public class Member {
     private Long id;
 
     @Setter @NotBlank
+    @Column(unique = true)
     private String loginId;
     @Setter @NotBlank
     private String nickName;
